@@ -7,7 +7,12 @@ const bodyParser = require("body-parser");
 
 require("dotenv").config();
 app.use(cors(), function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5173"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Origin",
+    process.env.NODE_ENV === "DEV"
+      ? "http://127.0.0.1:5173"
+      : "https://romeshkosme.github.io/"
+  ); // update to match the domain you will make the request from
   res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
