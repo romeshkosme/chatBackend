@@ -6,7 +6,10 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://chatbackend-production-c208.up.railway.app/",
+  optionsSuccessStatus: 200
+}));
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -22,7 +25,7 @@ const server = app.listen(8080, () => {
 const io = require("socket.io")(server, {
   pingTimeOut: 60000,
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://chatbackend-production-c208.up.railway.app/",
   },
 });
 io.on("connection", (socket) => {
