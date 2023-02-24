@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 
 require("dotenv").config();
 app.use(cors({
-  origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io/chatFrontend/",
+  origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io",
   optionsSuccessStatus: 200
 }));
 // parse application/x-www-form-urlencoded
@@ -25,7 +25,7 @@ const server = app.listen(8080, () => {
 const io = require("socket.io")(server, {
   pingTimeOut: 60000,
   cors: {
-    origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io/chatFrontend/",
+    origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io",
   },
 });
 io.on("connection", (socket) => {
