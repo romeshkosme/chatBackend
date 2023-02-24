@@ -6,10 +6,14 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
-app.use(cors({
-  origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io",
-  optionsSuccessStatus: 200
-}));
+app.use(cors(), function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5173"); // update to match the domain you will make the request from
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -25,7 +29,7 @@ const server = app.listen(8080, () => {
 const io = require("socket.io")(server, {
   pingTimeOut: 60000,
   cors: {
-    origin: process.env.NODE_ENV === "DEV" ? "http://127.0.0.1:5173" : "https://romeshkosme.github.io",
+    origin: ["http://127.0.0.1:5173", "https://romeshkosme.github.io"],
   },
 });
 io.on("connection", (socket) => {
@@ -37,7 +41,7 @@ io.on("connection", (socket) => {
     socket.join(room);
   });
   socket.on("new message", (msg) => {
-    console.log("new msg",msg)
+    console.log("new msg", msg);
     let chat = msg.chat;
     if (!chat.users) {
       return console.log("chat.user not defined!");
@@ -50,7 +54,7 @@ io.on("connection", (socket) => {
     });
   });
   socket.off("setup", () => {
-    console.log("user disconnected")
-    socket.leave(userData)
-  })
+    console.log("user disconnected");
+    socket.leave(userData);
+  });
 });
