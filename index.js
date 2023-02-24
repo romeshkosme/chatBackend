@@ -6,6 +6,11 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 
 require("dotenv").config();
+console.log(
+  process.env.NODE_ENV === "DEV"
+    ? "http://127.0.0.1:5173"
+    : "https://romeshkosme.github.io"
+);
 app.use(cors(), function (req, res, next) {
   res.header(
     "Access-Control-Allow-Origin",
